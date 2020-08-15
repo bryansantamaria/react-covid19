@@ -13,6 +13,10 @@ const Chart = ({ data: { confirmed, recovered, deaths }, country }) => {
     fetchAPI();
   }, []);
 
+  if (confirmed) {
+    var stillInfected = [confirmed.value - recovered.value - deaths.value];
+  }
+
   const lineChart = dailyData.length ? (
     <Line
       data={{
@@ -39,7 +43,7 @@ const Chart = ({ data: { confirmed, recovered, deaths }, country }) => {
   const barChart = confirmed ? (
     <Bar
       data={{
-        labels: ["Infected", "Recovered", "Deaths"],
+        labels: ["Infected", "Recovered", "Deaths", "Still infected"],
         datasets: [
           {
             label: "People",
@@ -47,8 +51,14 @@ const Chart = ({ data: { confirmed, recovered, deaths }, country }) => {
               "rgba(0, 0, 255, 0.5)",
               "rgba(0, 255, 0, 0.5)",
               "rgba(255, 0, 0, 0.5)",
+              "rgba(255, 166, 0, 0.753)",
             ],
-            data: [confirmed.value, recovered.value, deaths.value],
+            data: [
+              confirmed.value,
+              recovered.value,
+              deaths.value,
+              stillInfected[0],
+            ],
           },
         ],
       }}
